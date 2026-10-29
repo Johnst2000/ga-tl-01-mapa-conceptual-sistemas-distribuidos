@@ -1,0 +1,164 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---------- Paquetes ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\setlength{\parskip}{0.6em}
+\setlength{\parindent}{0pt}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=blue}
+\urlstyle{same}
+
+\title{Ecosistemas de sistemas distribuidos}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+% =====================================================
+\section{Introducción}
+
+Un sistema distribuido se define como una colección de elementos informáticos autónomos que aparecen ante los usuarios como un sistema único y coherente~\cite{r01}. Este concepto ha evolucionado hacia el término ``Ecosistemas de sistemas distribuidos'', que describe subsistemas que interactúan basados en la ubicación, los recursos y los procesos~\cite{r02}.
+
+La necesidad de estos sistemas surge de la demanda de escalabilidad, interoperabilidad y resiliencia en aplicaciones que van desde finanzas globales hasta la monitorización ambiental a gran escala~\cite{r03}.
+
+% =====================================================
+\section{Tipos de sistemas distribuidos}
+
+Los sistemas pueden clasificarse según su arquitectura y propósito funcional:
+
+\begin{itemize}
+	\item \textbf{Arquitectura Cliente-Servidor:} El modelo tradicional donde las responsabilidades se dividen entre proveedores de servicios (servidores) y solicitantes (clientes)~\cite{r15}.
+
+	\item \textbf{Sistemas de Par a Par (\textit{Peer-to-Peer}, P2P):} Arquitecturas descentralizadas donde cada nodo puede actuar como cliente y servidor simultáneamente, mejorando la escalabilidad y la resistencia a la censura~\cite{r15}.
+
+	\item \textbf{Arquitecturas de N-Capas (\textit{N-tier}):} Evolución del modelo cliente-servidor que separa la presentación, la lógica de negocio y el almacenamiento de datos en capas distintas para facilitar el mantenimiento~\cite{r15}.
+
+	\item \textbf{Microservicios:} Un enfoque donde la aplicación se divide en servicios pequeños y autónomos que se comunican a través de protocolos ligeros, facilitando el despliegue continuo y la escalabilidad independiente~\cite{r25}.
+
+	\item \textbf{Computación en la Red (\textit{Grid Computing}):} Paradigma que permite compartir recursos geográficamente dispersos entre múltiples dominios administrativos, utilizado frecuentemente para computación científica de alto rendimiento~\cite{r26}.
+
+	\item \textbf{Computación en la Niebla y el Borde (\textit{Fog and Edge Computing}):} Despliegues que acercan el procesamiento y el almacenamiento a la fuente de datos (dispositivos IoT) para reducir la latencia y el consumo de ancho de banda~\cite{r27}.
+
+	\item \textbf{Sistemas Basados en Eventos (EDA):} Arquitecturas donde el flujo de información es impulsado por la producción y detección de eventos, permitiendo un desacoplamiento máximo entre componentes~\cite{r17}.
+\end{itemize}
+
+% =====================================================
+\section{Modelos de Comunicación}
+
+La comunicación es el mecanismo por el cual los procesos en un sistema distribuido coordinan sus acciones. Los modelos se dividen principalmente en directos (síncronos) e indirectos (asincrónicos)~\cite{r08}.
+
+\subsection{Comunicación síncrona}
+
+La Llamada a procedimiento remoto (RPC) busca que una llamada a un servicio en una máquina remota sea semánticamente similar a una llamada local~\cite{r08}.
+
+Protocolos modernos como gRPC y JSON-RPC (utilizado en el protocolo MCP) permiten una estructuración clara de solicitudes y respuestas~\cite{r09}. Sin embargo, este modelo puede ser problemático debido a las latencias de red, ya que el emisor queda bloqueado esperando el valor de retorno.
+
+\subsection{Comunicación asíncrona}
+
+Para superar las limitaciones del bloqueo, muchos sistemas adoptan el paso de mensajes y la comunicación basada en eventos:
+
+\begin{itemize}
+	\item \textbf{\textit{Message-Oriented Middleware} (MOM):} Facilita la comunicación asíncrona mediante colas de mensajes intermedias, lo que permite que el emisor y el receptor no necesiten estar activos simultáneamente~\cite{r10}.
+
+	\item \textbf{Modelo Publicación/Suscripción (Pub/Sub):} Los suscriptores expresan interés en ciertos temas y los publicadores envían mensajes sin conocer a los receptores finales. Este modelo es ampliamente utilizado en sistemas de tiempo real y mallas de microservicios mediante tecnologías como Apache Kafka, RabbitMQ e IBM MQ~\cite{r11}.
+
+	\item \textbf{Protocolos \textit{Gossip}:} Utilizados para la difusión epidémica de información en redes P2P, ofreciendo una alta tolerancia a fallos y escalabilidad sin necesidad de un coordinador central~\cite{r12}.
+\end{itemize}
+
+% =====================================================
+\section{Middleware: La capa de abstracción}
+
+El \textit{middleware} se sitúa entre el sistema operativo y las aplicaciones distribuidas, proporcionando una capa de abstracción que oculta la heterogeneidad de las redes, el hardware y los lenguajes de programación~\cite{r10}.
+
+\subsection{Funciones Principales del Middleware}
+
+\begin{itemize}
+	\item \textbf{Interoperabilidad:} Permite que sistemas heredados y plataformas modernas se comuniquen de manera fluida~\cite{r13}.
+
+	\item \textbf{Gestión de Recursos:} Facilita el descubrimiento de servicios, el balanceo de carga y la gestión de la movilidad de los nodos~\cite{r04}.
+
+	\item \textbf{Seguridad y Confianza:} Implementa mecanismos de autenticación y entornos de ejecución confiables (como Intel SGX con WebAssembly) para proteger los datos en tránsito y en reposo~\cite{r05}.
+
+	\item \textbf{Abstracción de Complejidad:} Oculta los detalles de la distribución, permitiendo a los desarrolladores enfocarse en la lógica de la aplicación~\cite{r14}.
+\end{itemize}
+
+% =====================================================
+\section{Transparencia en sistemas distribuidos}
+
+La transparencia es un principio de diseño fundamental cuyo objetivo es dar al usuario y al programador la ilusión de que el sistema distribuido es una unidad centralizada~\cite{r15}.
+
+\subsection{Formas de Transparencia}
+
+\begin{itemize}
+	\item \textbf{Transparencia de Acceso:} Permite acceder a recursos locales y remotos mediante las mismas operaciones.
+
+	\item \textbf{Transparencia de Ubicación:} Oculta dónde reside físicamente un recurso.
+
+	\item \textbf{Transparencia de Replicación:} Oculta el hecho de que un recurso está replicado para mejorar la fiabilidad~\cite{r15}.
+
+	\item \textbf{Transparencia de Fallos:} Permite que el sistema continúe operando a pesar de fallos en componentes individuales, sin que el usuario lo note~\cite{r16}.
+
+	\item \textbf{Transparencia Algorítmica y de IA:} Concepto emergente que busca que las decisiones tomadas por middlewares inteligentes sean explicables y auditables~\cite{r03}.
+\end{itemize}
+
+A pesar de sus beneficios, la transparencia total puede ser ``engañosa'' debido a que las latencias de red y los fallos parciales son realidades que no siempre pueden ocultarse sin afectar el rendimiento o la semántica de la aplicación.
+
+% =====================================================
+\section{Tolerancia a Fallos y Confiabilidad}
+
+Un sistema distribuido es propenso a fallos parciales, donde algunos componentes fallan mientras otros continúan operando. La tolerancia a fallos es la capacidad del sistema para sobrevivir a estos incidentes.
+
+\subsection{Mecanismos de Tolerancia a Fallos}
+
+\begin{itemize}
+	\item \textbf{Redundancia y Replicación:} Mantener copias de los datos y servicios en múltiples nodos para que, si uno falla, otro pueda tomar su lugar. Se utilizan algoritmos de consenso como Paxos, Raft y ZooKeeper para mantener la consistencia entre réplicas~\cite{r17}.
+
+	\item \textbf{Puntos de Control (\textit{Checkpointing}):} Guardar periódicamente el estado del sistema para permitir la recuperación desde un estado válido anterior en caso de fallo~\cite{r18}.
+
+	\item \textbf{Disyuntores (\textit{Circuit Breakers}):} Patrones que detectan fallos recurrentes en un servicio y detienen temporalmente las solicitudes hacia él para evitar fallos en cascada~\cite{r09}.
+
+	\item \textbf{Detección de Fallos Basada en Tiempos de Espera (\textit{Timeouts}):} Uso de temporizadores para suponer que un nodo ha fallado si no responde en un intervalo predefinido~\cite{r19}.
+
+	\item \textbf{Tolerancia a Fallos Bizantinos (BFT):} Mecanismos diseñados para sistemas donde los nodos pueden no solo fallar, sino actuar de manera maliciosa o contradictoria, esenciales en tecnologías blockchain~\cite{r20}.
+\end{itemize}
+
+% =====================================================
+\section{Teorema CAP y Modelos de Consistencia}
+
+El Teorema CAP, formulado originalmente por Eric Brewer, es una piedra angular en el diseño de sistemas distribuidos modernos. Establece que un sistema de almacenamiento de datos distribuido no puede garantizar simultáneamente tres propiedades: Consistencia, Disponibilidad y Tolerancia a Particiones.
+
+\subsection{Las Tres Garantías del CAP}
+
+\begin{itemize}
+	\item \textbf{Consistencia (C):} Todos los nodos ven los mismos datos al mismo tiempo después de una actualización exitosa~\cite{r21}.
+
+	\item \textbf{Disponibilidad (A):} Cada solicitud recibe una respuesta (éxito o fallo) sin garantía de que contenga la escritura más reciente~\cite{r22}.
+
+	\item \textbf{Tolerancia a Particiones (P):} El sistema continúa funcionando a pesar de la pérdida o retraso de mensajes entre nodos debido a fallos de red~\cite{r23}.
+\end{itemize}
+
+Dado que las particiones de red son inevitables en sistemas distribuidos a gran escala, el diseño se reduce generalmente a elegir entre Consistencia (sistemas CP) o Disponibilidad (sistemas AP) durante una partición~\cite{r24}.
+
+% =====================================================
+\section{Conclusión}
+
+Los ecosistemas de sistemas distribuidos actuales representan una de las áreas más complejas y dinámicas de la ingeniería de software. La capacidad de construir sistemas que sean a la vez escalables, transparentes y tolerantes a fallos depende de una comprensión profunda de los modelos de comunicación y de los límites teóricos impuestos por el Teorema CAP.
+
+El middleware continúa evolucionando para actuar no solo como un conector, sino como una capa inteligente que gestiona la confianza y la observabilidad en entornos globales.
+
+A medida que nos adentramos en la era de la IA distribuida y la computación en el borde, los principios fundamentales aquí expuestos seguirán siendo la base para la innovación en infraestructuras críticas.
+
+% =====================================================
+% Referencias: se generan desde referencias.bib
+\bibliographystyle{IEEEtran}
+\bibliography{referencias}
+
+\end{document}
